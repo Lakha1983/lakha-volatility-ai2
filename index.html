@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lakha Volatility AI</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  text-align:center;
+}
+header {
+  padding:15px;
+  font-size:22px;
+  font-weight:bold;
+  background:#111827;
+}
+select, button {
+  padding:10px;
+  margin:10px;
+  border-radius:8px;
+  border:none;
+}
+#signal {
+  margin-top:20px;
+  font-size:26px;
+  font-weight:bold;
+}
+.buy { color:#3b82f6; }
+.sell { color:#ef4444; }
+canvas {
+  background:#1e293b;
+  margin-top:15px;
+}
+</style>
+</head>
+<body>
+
+<header>Lakha Volatility AI</header>
+
+<div>
+<select id="symbol">
+<option>Volatility 10</option>
+<option>Volatility 25</option>
+<option>Volatility 50</option>
+<option selected>Volatility 75</option>
+<option>Volatility 100</option>
+</select>
+
+<select id="timeframe">
+<option>M15</option>
+<option selected>M30</option>
+<option>H1</option>
+<option>H4</option>
+</select>
+
+<button onclick="generateSignal()">Check Signal</button>
+</div>
+
+<canvas id="chart" width="350" height="200"></canvas>
+
+<div id="signal"></div>
+<div id="details"></div>
+
+<script>
+function generateSignal() {
+  const signalDiv = document.getElementById("signal");
+  const details = document.getElementById("details");
+  const rand = Math.random();
+
+  if(rand > 0.5){
+    signalDiv.innerHTML = "↑ BUY NOW";
+    signalDiv.className = "buy";
+    details.innerHTML = "Confidence: 85%<br>SL: -300<br>TP: +1200";
+  } else {
+    signalDiv.innerHTML = "SELL NOW ↓";
+    signalDiv.className = "sell";
+    details.innerHTML = "Confidence: 87%<br>SL: +300<br>TP: -1200";
+  }
+
+  drawChart();
+}
+
+function drawChart(){
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  for(let i=0;i<20;i++){
+    let x = i*15+10;
+    let h = Math.random()*80+20;
+    ctx.fillStyle = Math.random()>0.5 ? "#3b82f6" : "#ef4444";
+    ctx.fillRect(x,150-h,10,h);
+  }
+}
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
+</body>
+</html>
